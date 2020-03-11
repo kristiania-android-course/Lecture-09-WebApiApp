@@ -1,5 +1,6 @@
 package no.sample.news
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,7 +12,7 @@ import no.sample.news.adaptor.NewsFeedAdapter
 import no.sample.news.api.DummyNews
 import no.sample.news.datatype.NewsItem
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing OnClickListener*/ {
 
     var newsEndpoint = "https://www.vg.no/rss/feed/?format=json" // web api link
 
@@ -28,7 +29,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this) // We want the list to be linear & vertical list
         recyclerView.adapter = adapter // associating the adapter with recyclerView
 
+        adapter.onClickListener = this // clicking listening interface association
+
         updateNews(DummyNews.getNews()) // getting dummy feed for layout implementation
+
 
     }
 
@@ -38,4 +42,15 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged() // This notifies the adapter that data has changed. RecyclerView needs refresh
     }
 
+
+    override fun onClick(v: View?) {
+
+        var newsItem = v?.tag as NewsItem
+
+        Intent(this, WebViewActivity::class.java).also {intent->
+            intent.putExtra(WebViewActivity.LINK,newsItem.url)
+            startActivity(intent)
+        }
+
+    }
 }

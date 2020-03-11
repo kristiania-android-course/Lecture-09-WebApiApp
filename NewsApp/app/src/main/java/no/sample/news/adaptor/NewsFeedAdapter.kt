@@ -10,7 +10,7 @@ import no.sample.news.BuildConfig
 import no.sample.news.R
 import no.sample.news.datatype.NewsItem
 
-class NewsFeedAdapter (var list: ArrayList<NewsItem> = ArrayList()) : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
+class NewsFeedAdapter (var list: ArrayList<NewsItem> = ArrayList(), var onClickListener: View.OnClickListener? = null) : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
 
     init { // Initialization block that executes in the beginning
         Picasso.get().isLoggingEnabled = BuildConfig.DEBUG // we want to see logcat info from Picasso
@@ -63,6 +63,8 @@ class NewsFeedAdapter (var list: ArrayList<NewsItem> = ArrayList()) : RecyclerVi
             }
 
             itemView.tag = newsItem // why we are doing this. can you tell?
+
+            itemView.setOnClickListener(onClickListener)
 
         }
     }
