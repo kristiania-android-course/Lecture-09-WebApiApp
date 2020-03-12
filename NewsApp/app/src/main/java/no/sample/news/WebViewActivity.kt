@@ -23,4 +23,5 @@ class WebViewActivity : AppCompatActivity() {
         
         webView.loadUrl(link)
     }
+
 }
