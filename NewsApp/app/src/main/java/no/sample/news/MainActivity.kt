@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
@@ -15,7 +16,7 @@ import no.sample.news.api.vg.RssTask
 import no.sample.news.datatype.NewsItem
 import no.sample.news.utils.Utils
 
-class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing OnClickListener*/, NewsListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, NewsListener {
 
     var newsEndpoint = "https://www.vg.no/rss/feed/?format=json" // web api link
 
@@ -26,7 +27,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing On
 
         setContentView(R.layout.activity_main)
 
-
         //Setting up recyclerView view
         adapter = NewsFeedAdapter() // Empty adapter
         recyclerView.layoutManager = LinearLayoutManager(this) // We want the list to be linear & vertical list
@@ -34,16 +34,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing On
 
         adapter.onClickListener = this // clicking listening interface association
 
-        //updateNews(DummyNews.getNews()) // getting dummy feed for layout implementation
 
-        if(Utils.isNetworkAvailable(this)) {
-            RssTask(this).execute(newsEndpoint)
+        if( Utils.isNetworkAvailable(this)) {
+            RssTask(this).execute( newsEndpoint ) // Run async tasks
+        }
+        else {
+            Toast.makeText(this, getString(R.string.no_connection_message), Toast.LENGTH_LONG).show()
         }
     }
 
 
     // Refreshing the news feed
     private fun updateNews( feed: ArrayList<NewsItem>) {
+
+        if(isFinishing){
+            return
+        }
+
         adapter.list = feed // setting new feed ArrayList
         adapter.notifyDataSetChanged() // This notifies the adapter that data has changed. RecyclerView needs refresh
     }

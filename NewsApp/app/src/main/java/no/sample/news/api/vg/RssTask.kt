@@ -1,11 +1,12 @@
 package no.sample.news.api.vg
 
 import android.os.AsyncTask
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import no.sample.news.datatype.NewsItem
+import no.sample.news.gsontypes.NewsStory
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.json.JSONArray
-
 
 
 class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<NewsItem>>() {
@@ -44,32 +45,27 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
 
     private fun  parseIntoNewsList(json:String):ArrayList<NewsItem>
     {
-        var newsList = ArrayList<NewsItem>()
+        var gson = Gson()
 
-        var jsonDoc = JSONArray(json)
 
-        for (i in 0 until jsonDoc.length()) {
+        val type = object : TypeToken<ArrayList<NewsStory>>() {}.type
+        val stories = gson.fromJson<ArrayList<NewsStory>>(json, type)
 
-            val jItem = jsonDoc.getJSONObject(i)
+        var newsItems = ArrayList<NewsItem>()
 
-            var url = jItem.getString("url")
-            var title = jItem.getString("title")
-            var preamble = jItem.getString("preamble")
-            var date = jItem.getJSONObject("published").getString("date")
-            var authors = ArrayList<String>()
-            var thumbnail = jItem.getJSONObject("thumbnail").getString("url")
+        for( i in 0 until stories.size ){
 
-            var jAuthors = jItem.getJSONArray("authors")
+            var story  = stories.get(i)
 
-            for (j in 0 until jAuthors.length()){
-                authors.add(jAuthors.getJSONObject(j).getString("name"))
-            }
+            var authors = story.authors?.map { it.name }
 
-            newsList.add(NewsItem(title,preamble, date, url, authors, thumbnail))
+            var thumbnailUrl = story?.thumbnail?.url
+
+            newsItems. add (NewsItem(story.title, story.preamble, story.published.date, story.url,  authors as ArrayList<String> , thumbnailUrl))
 
         }
 
-        return newsList
+        return newsItems
     }
 
 
