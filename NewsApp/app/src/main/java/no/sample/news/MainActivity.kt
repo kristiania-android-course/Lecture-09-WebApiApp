@@ -67,8 +67,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NewsListener {
 
     }
 
-    override fun onNews(newsList: ArrayList<NewsStory>?) {
+    override fun onNewsSuccess(newsList: ArrayList<NewsStory>?) {
 
+        if(isFinishing){
+            return
+        }
         updateNews(newsList!!)
+    }
+
+    override fun onNewsError() {
+        Toast.makeText(this, getString(R.string.news_fetch_error), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showProgress(show: Boolean) {
+
+        if( isFinishing ){
+            return
+        }
+
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

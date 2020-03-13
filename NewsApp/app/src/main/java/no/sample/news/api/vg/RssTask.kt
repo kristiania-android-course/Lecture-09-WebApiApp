@@ -7,6 +7,7 @@ import no.sample.news.gsontypes.NewsStory
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.lang.Exception
 
 
 class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<NewsStory>>() {
@@ -14,12 +15,46 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
 
     override fun doInBackground(vararg params: String?): ArrayList<NewsStory> {
 
-        lateinit var newsItem : ArrayList<NewsStory>
+        publishProgress(0)
 
-        var jsonResponse = callWebRequest(params.get(0)!!)
-        newsItem = parseIntoNewsList(jsonResponse)
+        try {
+            lateinit var newsItem : ArrayList<NewsStory>
 
-        return newsItem
+            var jsonResponse = callWebRequest(params.get(0)!!)
+            newsItem = parseIntoNewsList(jsonResponse)
+
+            return newsItem
+        }
+        catch (ex:Exception){
+            ex.printStackTrace()
+        }
+
+
+        return arrayListOf()
+
+    }
+
+    override fun onProgressUpdate(vararg values: Any?) {
+        super.onProgressUpdate(*values)
+
+        listener?.showProgress(true)
+    }
+
+    override fun onPostExecute(result: ArrayList<NewsStory>) {
+
+
+        super.onPostExecute(result)
+        
+        listener?.showProgress(false)
+
+        if(result.isEmpty()){
+            listener?.onNewsError()
+        }
+        else
+        {
+            listener?.onNewsSuccess(result)
+        }
+
     }
 
     private fun callWebRequest(url: String): String
@@ -36,11 +71,7 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
     }
 
 
-    override fun onPostExecute(result: ArrayList<NewsStory>?) {
 
-        super.onPostExecute(result)
-        listener?.onNews(result)
-    }
 
 
     private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
