@@ -70,7 +70,7 @@ private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
  ## JSON Parsing with GSON Library 
 
 
- private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
+    private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
     {
         var gson = Gson()
 
