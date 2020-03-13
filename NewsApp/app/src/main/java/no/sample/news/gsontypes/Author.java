@@ -6,14 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Author {
 
-    @SerializedName("id")
-    @Expose
+
     private String id;
-    @SerializedName("name")
-    @Expose
     private String name;
-    @SerializedName("email")
-    @Expose
     private String email;
 
     public String getId() {
