@@ -44,7 +44,7 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
 
 
         super.onPostExecute(result)
-        
+
         listener?.showProgress(false)
 
         if(result.isEmpty()){
