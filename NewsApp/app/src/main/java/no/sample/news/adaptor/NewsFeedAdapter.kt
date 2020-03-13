@@ -8,9 +8,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.news_item_layout.view.*
 import no.sample.news.BuildConfig
 import no.sample.news.R
-import no.sample.news.datatype.NewsItem
+import no.sample.news.gsontypes.NewsStory
 
-class NewsFeedAdapter (var list: ArrayList<NewsItem> = ArrayList(), var onClickListener: View.OnClickListener? = null) : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
+class NewsFeedAdapter (var list: ArrayList<NewsStory> = ArrayList(), var onClickListener: View.OnClickListener? = null) : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
 
     init { // Initialization block that executes in the beginning
         Picasso.get().isLoggingEnabled = BuildConfig.DEBUG // we want to see logcat info from Picasso
@@ -38,7 +38,7 @@ class NewsFeedAdapter (var list: ArrayList<NewsItem> = ArrayList(), var onClickL
 
     inner class NewsViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bindNewsItemWithViewHolder(newsItem: NewsItem) {
+        fun bindNewsItemWithViewHolder(newsItem: NewsStory) {
 
             //Thanks to kotlinx.android.synthetic.main.news_item_layout.view.*
             // It has automatically declared views members inside itemView of NewsViewHolder
@@ -49,17 +49,17 @@ class NewsFeedAdapter (var list: ArrayList<NewsItem> = ArrayList(), var onClickL
 
             //Use of Picasso
             Picasso.get()
-                .load(newsItem.thumbnail)
+                .load(newsItem?.thumbnail?.url)
                 .resize(100, 100)
                 .centerCrop()
                 .into(itemView.imageViewThumbnail)
 
 
-            itemView.texViewDate.text = newsItem.publishedDate
+            itemView.texViewDate.text = newsItem.published.date
 
             itemView.texViewAuthors.text= ""
             if(newsItem.authors?.isEmpty()==false) {
-                itemView.texViewAuthors.text = newsItem.authors?.get(0) // There are multiple authors but we are only picking the first one :).
+                itemView.texViewAuthors.text = newsItem?.authors?.get(0)?.name // There are multiple authors but we are only picking the first one :).
             }
 
             itemView.tag = newsItem // why we are doing this. can you tell?

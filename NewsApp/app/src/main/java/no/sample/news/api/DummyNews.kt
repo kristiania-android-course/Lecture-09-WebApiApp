@@ -1,44 +1,38 @@
 package no.sample.news.api
 
-import no.sample.news.datatype.NewsItem
+import no.sample.news.gsontypes.Author
+import no.sample.news.gsontypes.NewsStory
+import no.sample.news.gsontypes.Published
+import no.sample.news.gsontypes.Thumbnail
+
 
 object DummyNews {
 
-    fun getNews() : ArrayList<NewsItem>{
+    fun getNews() : ArrayList<NewsStory>{
 
-        return arrayListOf(
-            NewsItem("Sjef i advokatfirma slår transportfirmaet sitt konkurs",
-                "Selskapet undersøkes for mulige skatteunndragelser. Styreleder og eier Afzzal Ghauri gir VG-oppslag skylden for konkursen.",
-                "tirsdag 10. mars", "https://www.vg.no/nyheter/innenriks/i/wPQKxL/sjef-i-advokatfirma-slaar-transportfirmaet-sitt-konkurs", arrayListOf("Markus Tobiassen"),
-                "https://smp.vgc.no/v2/images/c7991ead-71c5-4723-8ebf-eedeb6f141cc?fit=crop&h=267&w=400&s=32885e09ad32d0250383ca4bf2474c08cdb6d916"),
-            NewsItem("Frp går inn for forslag om å bygge Nord-Norgebanen",
-                "Frp har bestemt seg for å støtte forslaget om å be regjeringen igangsette arbeidet med å bygge jernbanen som har vært planlagt og påtenkt i over 100 år. ",
-                "tirsdag 10. mars",
-                "https://www.vg.no/nyheter/innenriks/i/y3MxKR/frp-gaar-inn-for-forslag-om-aa-bygge-nord-norgebanen",
-                arrayListOf("Martha C. S. Holmes", ""),
-                "https://imbo.vgtv.no/users/vgtv/images/3a380d219532089457ba6b05f9b99a49.jpg?t%5B%5D=320x180q80"),
+        var news1 = NewsStory()
 
-        NewsItem("Frp går inn for forslag om å bygge Nord-Norgebanen",
-            "Frp har bestemt seg for å støtte forslaget om å be regjeringen igangsette arbeidet med å bygge jernbanen som har vært planlagt og påtenkt i over 100 år. ",
-            "tirsdag 10. mars",
-            "https://www.vg.no/nyheter/innenriks/i/y3MxKR/frp-gaar-inn-for-forslag-om-aa-bygge-nord-norgebanen",
-            arrayListOf("Martha C. S. Holmes", ""),
-            "https://imbo.vgtv.no/users/vgtv/images/3a380d219532089457ba6b05f9b99a49.jpg?t%5B%5D=320x180q80"),
+        news1.title = "Vitsen med norsk rettskriving"
+        news1.preamble = "Hun var alltid i politiets søkelys, jaget i by etter by, prostituert i 15 år. Hun ble drept og forsvant. Nå er Frida Grünfeld løftet fram for all ettertid, i en bok som forteller europeisk historie av sjeldent merke."
+        news1.published = Published()
+        news1.published.date = "tirsdag 16. mars"
+        news1.authors = ArrayList<Author>()
+        news1.authors.add(Author())
+        news1.authors.get(0).name = "Markus Tobiassen"
+        news1.url = "https://www.vg.no/nyheter/meninger/i/kJOdbA/vitsen-med-norsk-rettskriving"
+        news1.thumbnail = Thumbnail()
+        news1.thumbnail.url = "https://smp.vgc.no/v2/images/8629cb8c-cde0-49c2-b61a-05a188564f64?fit=crop&h=200&w=400&s=f7824fe7723f647f3224b64c437d96da28c16fea"
 
+        var newsList = ArrayList<NewsStory> ()
 
-        NewsItem("Frp går inn for forslag om å bygge Nord-Norgebanen",
-            "Frp har bestemt seg for å støtte forslaget om å be regjeringen igangsette arbeidet med å bygge jernbanen som har vært planlagt og påtenkt i over 100 år. ",
-            "tirsdag 10. mars",
-            "https://www.vg.no/nyheter/innenriks/i/y3MxKR/frp-gaar-inn-for-forslag-om-aa-bygge-nord-norgebanen",
-            arrayListOf("Martha C. S. Holmes", ""),
-            "https://imbo.vgtv.no/users/vgtv/images/3a380d219532089457ba6b05f9b99a49.jpg?t%5B%5D=320x180q80"),
-        NewsItem("Frp går inn for forslag om å bygge Nord-Norgebanen",
-            "Frp har bestemt seg for å støtte forslaget om å be regjeringen igangsette arbeidet med å bygge jernbanen som har vært planlagt og påtenkt i over 100 år. ",
-            "tirsdag 10. mars",
-            "https://www.vg.no/nyheter/innenriks/i/y3MxKR/frp-gaar-inn-for-forslag-om-aa-bygge-nord-norgebanen",
-            arrayListOf("Martha C. S. Holmes", ""),
-            "https://imbo.vgtv.no/users/vgtv/images/3a380d219532089457ba6b05f9b99a49.jpg?t%5B%5D=320x180q80"))
+        newsList.add(news1)
+        newsList.add(news1)
+        newsList.add(news1)
+        newsList.add(news1)
+        newsList.add(news1)
+        newsList.add(news1)
 
 
+        return newsList
     }
 }
