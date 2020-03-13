@@ -1,19 +1,13 @@
 
 package no.sample.news.gsontypes;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Thumbnail {
 
-    @SerializedName("width")
-    @Expose
     private Integer width;
-    @SerializedName("height")
-    @Expose
+
     private Integer height;
-    @SerializedName("url")
-    @Expose
+
     private String url;
 
     public Integer getWidth() {

@@ -2,40 +2,28 @@
 package no.sample.news.gsontypes;
 
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+
 
 public class NewsStory {
 
-    @SerializedName("id")
-    @Expose
+
     private String id;
-    @SerializedName("published")
-    @Expose
+
     private Published published;
-    @SerializedName("url")
-    @Expose
     private String url;
-    @SerializedName("persistentUrl")
-    @Expose
+
     private String persistentUrl;
-    @SerializedName("title")
-    @Expose
+
     private String title;
-    @SerializedName("preamble")
-    @Expose
+
     private String preamble;
-    @SerializedName("authors")
-    @Expose
+
     private List<Author> authors = null;
-    @SerializedName("mainCategory")
-    @Expose
+
     private String mainCategory;
-    @SerializedName("categories")
-    @Expose
+
     private List<Category> categories = null;
-    @SerializedName("thumbnail")
-    @Expose
+
     private Thumbnail thumbnail;
 
     public String getId() {
