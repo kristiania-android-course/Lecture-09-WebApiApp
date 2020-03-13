@@ -23,3 +23,66 @@ Implementation uses AsyncTask to make web request.
                 .build()
 
         var response = client.newCall(request).execute()
+
+
+## JSON Parsing with JSONArray and JSONObject
+
+private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
+    {
+        var newsList = ArrayList<NewsStory>()
+
+        var jsonDoc = JSONArray(json)
+
+        for (i in 0 until jsonDoc.length()) {
+
+
+
+            val jItem = jsonDoc.getJSONObject(i)
+
+            var story = NewsStory()
+
+
+            story.url = jItem.getString("url")
+            story.title = jItem.getString("title")
+            story.preamble = jItem.getString("preamble")
+            story.published = Published()
+            story.published.date = jItem.getJSONObject("published").getString("date")
+
+            var jAuthors = jItem.getJSONArray("authors")
+
+            story.authors = ArrayList<Author>()
+            story.authors.add(Author())
+
+            story.authors.get(0).name =jAuthors.getJSONObject(0).getString("name")
+
+            var thumbnail = jItem.getJSONObject("thumbnail").getString("url")
+
+            story.thumbnail = Thumbnail()
+            story.thumbnail.url = thumbnail
+
+            newsList.add(story)
+
+        }
+
+        return newsList
+    }
+    
+ ## JSON Parsing with GSON Library 
+
+
+ private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
+    {
+        var gson = Gson()
+
+        val type = object : TypeToken<ArrayList<NewsStory>>() {}.type
+
+        val stories = gson.fromJson< ArrayList<NewsStory> >( json,  type )
+
+
+        return stories
+    }
+
+
+
+
+    
