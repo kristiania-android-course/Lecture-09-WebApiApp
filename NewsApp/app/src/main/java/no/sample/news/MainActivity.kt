@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import no.sample.news.adaptor.NewsFeedAdapter
+import no.sample.news.api.DummyNews
 import no.sample.news.api.vg.NewsListener
 import no.sample.news.api.vg.RssTask
 import no.sample.news.utils.Utils
@@ -32,16 +33,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing On
 
         adapter.onClickListener = this // clicking listening interface association
 
-        //updateNews(DummyNews.getNews()) // getting dummy feed for layout implementation
+        updateNews(DummyNews.getNews()) // getting dummy feed for layout implementation
 
-        if(Utils.isNetworkAvailable(this)) {
-            RssTask(this).execute(newsEndpoint)
-        }
+
     }
 
 
     // Refreshing the news feed
+
     private fun updateNews( feed: ArrayList<NewsStory>) {
+
+        if( isFinishing ){
+            return
+        }
+
         adapter.list = feed // setting new feed ArrayList
         adapter.notifyDataSetChanged() // This notifies the adapter that data has changed. RecyclerView needs refresh
     }

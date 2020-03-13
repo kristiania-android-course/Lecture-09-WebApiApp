@@ -10,7 +10,8 @@ import no.sample.news.BuildConfig
 import no.sample.news.R
 import no.sample.news.gsontypes.NewsStory
 
-class NewsFeedAdapter (var list: ArrayList<NewsStory> = ArrayList(), var onClickListener: View.OnClickListener? = null) : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
+class NewsFeedAdapter (var list: ArrayList<NewsStory> = ArrayList(), var onClickListener: View.OnClickListener? = null)
+    : RecyclerView.Adapter<NewsFeedAdapter.NewsViewHolder>() {
 
     init { // Initialization block that executes in the beginning
         Picasso.get().isLoggingEnabled = BuildConfig.DEBUG // we want to see logcat info from Picasso
