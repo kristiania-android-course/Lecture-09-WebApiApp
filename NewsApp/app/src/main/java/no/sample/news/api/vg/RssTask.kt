@@ -1,19 +1,22 @@
 package no.sample.news.api.vg
 
 import android.os.AsyncTask
-import no.sample.news.datatype.NewsItem
+import no.sample.news.gsontypes.Author
+import no.sample.news.gsontypes.NewsStory
+import no.sample.news.gsontypes.Published
+import no.sample.news.gsontypes.Thumbnail
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
 
 
 
-class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<NewsItem>>() {
+class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<NewsStory>>() {
 
 
-    override fun doInBackground(vararg params: String?): ArrayList<NewsItem> {
+    override fun doInBackground(vararg params: String?): ArrayList<NewsStory> {
 
-        lateinit var newsItem : ArrayList<NewsItem>
+        lateinit var newsItem : ArrayList<NewsStory>
 
         var jsonResponse = callWebRequest(params.get(0)!!)
         newsItem = parseIntoNewsList(jsonResponse)
@@ -35,37 +38,47 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
     }
 
 
-    override fun onPostExecute(result: ArrayList<NewsItem>?) {
+    override fun onPostExecute(result: ArrayList<NewsStory>?) {
 
         super.onPostExecute(result)
         listener?.onNews(result)
     }
 
 
-    private fun  parseIntoNewsList(json:String):ArrayList<NewsItem>
+    private fun  parseIntoNewsList(json:String):ArrayList<NewsStory>
     {
-        var newsList = ArrayList<NewsItem>()
+        var newsList = ArrayList<NewsStory>()
 
         var jsonDoc = JSONArray(json)
 
         for (i in 0 until jsonDoc.length()) {
 
+
+
             val jItem = jsonDoc.getJSONObject(i)
 
-            var url = jItem.getString("url")
-            var title = jItem.getString("title")
-            var preamble = jItem.getString("preamble")
-            var date = jItem.getJSONObject("published").getString("date")
-            var authors = ArrayList<String>()
-            var thumbnail = jItem.getJSONObject("thumbnail").getString("url")
+            var story = NewsStory()
+
+
+            story.url = jItem.getString("url")
+            story.title = jItem.getString("title")
+            story.preamble = jItem.getString("preamble")
+            story.published = Published()
+            story.published.date = jItem.getJSONObject("published").getString("date")
 
             var jAuthors = jItem.getJSONArray("authors")
 
-            for (j in 0 until jAuthors.length()){
-                authors.add(jAuthors.getJSONObject(j).getString("name"))
-            }
+            story.authors = ArrayList<Author>()
+            story.authors.add(Author())
 
-            newsList.add(NewsItem(title,preamble, date, url, authors, thumbnail))
+            story.authors.get(0).name =jAuthors.getJSONObject(0).getString("name")
+
+            var thumbnail = jItem.getJSONObject("thumbnail").getString("url")
+
+            story.thumbnail = Thumbnail()
+            story.thumbnail.url = thumbnail
+
+            newsList.add(story)
 
         }
 

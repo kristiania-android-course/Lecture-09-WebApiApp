@@ -4,16 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import no.sample.news.adaptor.NewsFeedAdapter
-import no.sample.news.api.DummyNews
 import no.sample.news.api.vg.NewsListener
 import no.sample.news.api.vg.RssTask
-import no.sample.news.datatype.NewsItem
 import no.sample.news.utils.Utils
+import no.sample.news.gsontypes.NewsStory
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing OnClickListener*/, NewsListener {
 
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing On
 
 
     // Refreshing the news feed
-    private fun updateNews( feed: ArrayList<NewsItem>) {
+    private fun updateNews( feed: ArrayList<NewsStory>) {
         adapter.list = feed // setting new feed ArrayList
         adapter.notifyDataSetChanged() // This notifies the adapter that data has changed. RecyclerView needs refresh
     }
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing On
 
     override fun onClick(v: View?) {
 
-        var newsItem = v?.tag as NewsItem
+        var newsItem = v?.tag as NewsStory
 
         Intent(this, WebViewActivity::class.java).also {intent->
             intent.putExtra(WebViewActivity.LINK,newsItem.url)
@@ -60,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener /*Implementing On
 
     }
 
-    override fun onNews(newsList: ArrayList<NewsItem>?) {
+    override fun onNews(newsList: ArrayList<NewsStory>?) {
 
         updateNews(newsList!!)
     }
