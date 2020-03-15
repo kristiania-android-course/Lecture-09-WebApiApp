@@ -12,6 +12,7 @@ class VgFeedClient {
 
     private lateinit var service :  VgService
 
+
     constructor()
     {
         var retrofit = Retrofit.Builder()
@@ -28,20 +29,18 @@ class VgFeedClient {
         newsListener.showProgress(true)
         var call = service.getNewsFeed()
 
-        call.enqueue(object :Callback<ArrayList<NewsStory>>{
+        call.enqueue(object :Callback<ArrayList<NewsStory>>
+        {
             override fun onFailure(call: Call<ArrayList<NewsStory>>, t: Throwable) {
                 newsListener.showProgress(false)
 
                 newsListener.onNewsError()
             }
 
-            override fun onResponse(
-                call: Call<ArrayList<NewsStory>>,
-                response: Response<ArrayList<NewsStory>>)
-            {
+            override fun onResponse( call: Call<ArrayList<NewsStory>>, response: Response<ArrayList<NewsStory>>) {
                 newsListener.showProgress(false)
 
-                if(response.isSuccessful)
+               if(response.isSuccessful)
                {
                    newsListener.onNewsSuccess(response.body())
                }
