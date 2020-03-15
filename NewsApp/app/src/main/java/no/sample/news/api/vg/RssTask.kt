@@ -8,7 +8,7 @@ import no.sample.news.gsontypes.Thumbnail
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
-
+import org.json.JSONObject
 
 
 class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<NewsStory>>() {
@@ -58,8 +58,7 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
             val jItem = jsonDoc.getJSONObject(i)
 
             var story = NewsStory()
-
-
+            
             story.url = jItem.getString("url")
             story.title = jItem.getString("title")
             story.preamble = jItem.getString("preamble")
@@ -73,7 +72,10 @@ class RssTask (var listener : NewsListener? ): AsyncTask<String, Any, ArrayList<
 
             story.authors.get(0).name =jAuthors.getJSONObject(0).getString("name")
 
-            var thumbnail = jItem.getJSONObject("thumbnail").getString("url")
+
+            var jThumbnail:JSONObject? = jItem.optJSONObject("thumbnail")
+
+            var thumbnail = jThumbnail?.getString("url")
 
             story.thumbnail = Thumbnail()
             story.thumbnail.url = thumbnail
