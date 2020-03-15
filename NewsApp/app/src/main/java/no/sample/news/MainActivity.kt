@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import no.sample.news.adaptor.NewsFeedAdapter
 import no.sample.news.api.vg.NewsListener
-import no.sample.news.api.vg.RssTask
+import no.sample.news.api.vg.VgFeedClient
+import no.sample.news.api.vg.VgService
 import no.sample.news.utils.Utils
 import no.sample.news.gsontypes.NewsStory
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NewsListener {
 
 
         if( Utils.isNetworkAvailable(this)) {
-            RssTask(this).execute( newsEndpoint ) // Run async tasks
+           VgFeedClient().getNewsFeed(this)
         }
         else {
             Toast.makeText(this, getString(R.string.no_connection_message), Toast.LENGTH_LONG).show()
@@ -67,8 +68,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NewsListener {
 
     }
 
-    override fun onNews(newsList: ArrayList<NewsStory>?) {
+    override fun onNewsSuccess(newsList: ArrayList<NewsStory>?) {
 
+        if(isFinishing){
+            return
+        }
         updateNews(newsList!!)
+    }
+
+    override fun onNewsError() {
+        Toast.makeText(this, getString(R.string.news_fetch_error), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showProgress(show: Boolean) {
+
+        if( isFinishing ){
+            return
+        }
+
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

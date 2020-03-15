@@ -1,6 +1,9 @@
 package no.sample.news.api.vg
 
 import no.sample.news.gsontypes.NewsStory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -20,16 +23,35 @@ class VgFeedClient {
 
     }
 
-    fun getNewsFeed(): ArrayList<NewsStory>{
+    fun getNewsFeed(newsListener: NewsListener){
 
+        newsListener.showProgress(true)
         var call = service.getNewsFeed()
-        var response =  call.execute()
 
-        if(response.isSuccessful) {
-            return response.body()!!
-        }
+        call.enqueue(object :Callback<ArrayList<NewsStory>>{
+            override fun onFailure(call: Call<ArrayList<NewsStory>>, t: Throwable) {
+                newsListener.showProgress(false)
 
-        return arrayListOf()
+                newsListener.onNewsError()
+            }
+
+            override fun onResponse(
+                call: Call<ArrayList<NewsStory>>,
+                response: Response<ArrayList<NewsStory>>)
+            {
+                newsListener.showProgress(false)
+
+                if(response.isSuccessful)
+               {
+                   newsListener.onNewsSuccess(response.body())
+               }
+               else
+               {
+                   newsListener.onNewsError()
+               }
+            }
+        })
+
     }
 
 
