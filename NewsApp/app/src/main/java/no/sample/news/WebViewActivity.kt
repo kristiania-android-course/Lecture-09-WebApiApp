@@ -21,7 +21,7 @@ class WebViewActivity : AppCompatActivity() {
             link = this?.intent.getStringExtra(LINK)
         }
         
-        webView.loadUrl(link)
+        this.webView.loadUrl(link)
     }
 
 }
